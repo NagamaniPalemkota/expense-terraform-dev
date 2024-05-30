@@ -119,6 +119,16 @@ resource "aws_security_group_rule" "frontend_bastion" {
     source_security_group_id = module.bastion.sg_id  # it is from where we're getting traffic
 }
 
+#inbound security group rules allowing traffic to frontend from ansible
+resource "aws_security_group_rule" "frontend_ansible" {
+    type = "ingress"
+    protocol = "tcp"
+    from_port = 22
+    to_port = 22
+    security_group_id = module.frontend.sg_id
+    source_security_group_id = module.ansible.sg_id  # it is from where we're getting traffic
+}
+
 #inbound security group rules allowing traffic to bastion from public
 resource "aws_security_group_rule" "bastion_public" {
     type = "ingress"
